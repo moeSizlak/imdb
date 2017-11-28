@@ -116,7 +116,8 @@ module Imdb
     # Returns a float containing the average user rating
     def rating
       doc = Nokogiri::HTML(Imdb::Movie.find_by_id(@id, :ratings))
-      doc.css('div#tn15.ratings div#tn15main div#tn15content p')[0].text.match(/IMDb users have given a weighted average vote of (\d[\d.]+) \/ 10/).captures[0] rescue nil
+      #doc.css('div#tn15.ratings div#tn15main div#tn15content p')[0].text.match(/IMDb users have given a weighted average vote of (\d[\d.]+) \/ 10/).captures[0] rescue nil
+      doc.css('div#main div.title-ratings-sub-page div.allText')[0].text.gsub(/\s+/," ").match(/IMDb users have given a weighted average vote of (\d[\d.]+) \/ 10/).captures[0] rescue nil
     end
     
     # Returns an int containing the Metascore
@@ -127,7 +128,8 @@ module Imdb
     # Returns an int containing the number of user ratings
     def votes
       doc = Nokogiri::HTML(Imdb::Movie.find_by_id(@id, :ratings))
-      doc.css('div#tn15.ratings div#tn15main div#tn15content p')[0].text.match(/(\d+) IMDb users have given/).captures[0] rescue nil
+      #doc.css('div#tn15.ratings div#tn15main div#tn15content p')[0].text.match(/(\d+) IMDb users have given/).captures[0] rescue nil
+      doc.css('div#main div.title-ratings-sub-page div.allText')[0].text.gsub(/\s+/," ").match(/([,\d]+) IMDb users have given/).captures[0].gsub(/,/,'') rescue nil
     end
 
     # Returns a string containing the tagline
@@ -145,7 +147,7 @@ module Imdb
       if @title && !force_refresh
         @title
       else
-        @title = document.at('h1').inner_html.split('<span').first.strip.imdb_unescape_html rescue nil
+        @title = document.at('.combined h1').inner_html.split('<span').first.strip.imdb_unescape_html rescue nil
       end
     end
 
