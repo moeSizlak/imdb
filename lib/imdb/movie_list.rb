@@ -8,9 +8,10 @@ module Imdb
 
     def parse_movies
       document.search("a[@href^='/title/tt']").reject do |element|
-        element.inner_html.imdb_strip_tags.empty? ||
-        element.inner_html.imdb_strip_tags == 'X' ||
-        element.parent.inner_html =~ /media from/i
+        element.inner_html.imdb_strip_tags.empty?  ||
+        element.inner_html.imdb_strip_tags == 'X'  ||
+        element.parent.inner_html =~ /media from/i || 
+        element.parent.inner_html =~ /on IMDb Top Rated Movies/i
       end.map do |element|
         id = element['href'][/\d+/]
 
