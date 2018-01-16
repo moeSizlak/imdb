@@ -63,7 +63,8 @@ module Imdb
 
     # Returns an array of genres (as strings)
     def genres
-      document.search("h5[text()='Genre:'] ~ div a[@href*='/Sections/Genres/']").map { |link| link.content.strip } rescue []
+      #document.search("h5[text()='Genre:'] ~ div a[@href*='/Sections/Genres/']").map { |link| link.content.strip } rescue []
+      document.search("div.titlereference-header a[@href^='/genre/']").map { |link| link.content.strip } rescue []
     end
 
     # Returns an array of languages as strings.
@@ -88,7 +89,8 @@ module Imdb
 
     # Returns a string containing the plot.
     def plot
-      sanitize_plot(document.at("h5[text()='Plot:'] ~ div").content) rescue nil
+      #sanitize_plot(document.at("h5[text()='Plot:'] ~ div").content) rescue nil
+      sanitize_plot(document.at('section.titlereference-section-overview > div').content.strip) rescue nil
     end
 
     # Returns a string containing the plot summary
@@ -139,7 +141,8 @@ module Imdb
 
     # Returns a string containing the mpaa rating and reason for rating
     def mpaa_rating
-      document.at("//a[starts-with(.,'MPAA')]/../following-sibling::*").content.strip rescue nil
+      #document.at("//a[starts-with(.,'MPAA')]/../following-sibling::*").content.strip rescue nil
+      document.at("a[@href^='/search/title?certificates=US%3A']").text.strip.gsub(/^United States:/, '') rescue nil
     end
 
     # Returns a string containing the title
@@ -147,13 +150,15 @@ module Imdb
       if @title && !force_refresh
         @title
       else
-        @title = document.at('.combined h1').inner_html.split('<span').first.strip.imdb_unescape_html rescue nil
+        #@title = document.at('.combined h1').inner_html.split('<span').first.strip.imdb_unescape_html rescue nil
+        @title = document.at("//h3[@itemprop = 'name']").inner_html.split('<span').first.strip.imdb_unescape_html rescue nil
       end
     end
 
     # Returns an integer containing the year (CCYY) the movie was released in.
     def year
-      document.at("a[@href^='/year/']").content.to_i rescue nil
+      #document.at("a[@href^='/year/']").content.to_i rescue nil
+       document.at("//h3[@itemprop = 'name']//a[@itemprop = 'url']").text.to_i rescue nil
     end
 
     # Returns release date for the movie.
