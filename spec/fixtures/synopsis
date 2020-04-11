@@ -811,7 +811,7 @@ Page last updated by <a href="/user/ur1144394/">drstrangelove57</a>, 4 years ago
 <script language="javascript" type="text/javascript">
 Swiki = new Swiki(40791);
 </script>
-<a class="swiki_problem" href="/helpdesk/swiki_problem?url=http%3A%2F%2Fakas.imdb.com%2Ftitle%2Ftt0095016%2Fsynopsis">Report a problem</a>
+<a class="swiki_problem" href="/helpdesk/swiki_problem?url=http%3A%2F%2Fwww.imdb.com%2Ftitle%2Ftt0095016%2Fsynopsis">Report a problem</a>
 <hr/><h3>Related Links</h3><table>
           <tr><td width="33%" style="width: 400px"> <a href="/title/tt0095016/plotsummary" onClick="(new Image()).src='/rg/title-related/synopsis-plotsummary/images/b.gif?link=/title/tt0095016/plotsummary';">Plot summary</a></td><td width="33%" style="width: 400px"> <a href="/title/tt0095016/keywords" onClick="(new Image()).src='/rg/title-related/synopsis-keywords/images/b.gif?link=/title/tt0095016/keywords';">Plot keywords</a></td>           <td width="33%" style="width: 400px"> <a href="/title/tt0095016/faq" onClick="(new Image()).src='/rg/title-related/synopsis-faq/images/b.gif?link=/title/tt0095016/faq';">FAQ</a></td></tr> <tr><td width="33%" style="width: 400px"> <a href="/title/tt0095016/parentalguide" onClick="(new Image()).src='/rg/title-related/synopsis-parentalguide/images/b.gif?link=/title/tt0095016/parentalguide';">Parents Guide</a></td>      <td width="33%" style="width: 400px"> <a href="/title/tt0095016/reviews" onClick="(new Image()).src='/rg/title-related/synopsis-usercomments/images/b.gif?link=/title/tt0095016/reviews';">User reviews</a></td><td width="33%" style="width: 400px"> <a href="/title/tt0095016/alternateversions" onClick="(new Image()).src='/rg/title-related/synopsis-alternateversions/images/b.gif?link=/title/tt0095016/alternateversions';">Alternate versions</a></td></tr><tr><td width="33%" style="width: 400px"> <a href="/title/tt0095016/quotes" onClick="(new Image()).src='/rg/title-related/synopsis-quotes/images/b.gif?link=/title/tt0095016/quotes';">Quotes</a></td><td width="33%" style="width: 400px"> <a href="/title/tt0095016/trivia" onClick="(new Image()).src='/rg/title-related/synopsis-trivia/images/b.gif?link=/title/tt0095016/trivia';">Trivia</a></td><td width="33%" style="width: 400px"> <a href="/title/tt0095016/maindetails" onClick="(new Image()).src='/rg/title-related/synopsis-maindetails/images/b.gif?link=/title/tt0095016/maindetails';">Main details</a></td></tr><tr><td width="33%" style="width: 400px"> <a href="/Sections/Keywords/" onClick="(new Image()).src='/rg/title-related/synopsis-moka/images/b.gif?link=/Sections/Keywords/';">MoKA: keyword discovery</a></td>
 </table>
@@ -982,7 +982,7 @@ ad_utils.gpt.render_ad('bottom_ad');
                     "a2=",
                     "pId=",
                     "r=1",
-                    "rP=http%3A%2F%2Fakas.imdb.com%2Ftitle%2Ftt0095016%2Fsynopsis",
+                    "rP=http%3A%2F%2Fwww.imdb.com%2Ftitle%2Ftt0095016%2Fsynopsis",
                     "encoding=server",
                     "cb=822575383020"  
                 ];
@@ -1009,7 +1009,7 @@ COMSCORE.beacon({
 c1: 2,
 c2:"6034961",
 c3:"",
-c4:"http://akas.imdb.com/title/tt0095016/synopsis",
+c4:"http://www.imdb.com/title/tt0095016/synopsis",
 c5:"",
 c6:"",
 c15:""
@@ -1017,7 +1017,7 @@ c15:""
 }
 </script>
 <noscript>
-<img src="http://b.scorecardresearch.com/p?c1=2&c2=6034961&c3=&c4=http%3A%2F%2Fakas.imdb.com%2Ftitle%2Ftt0095016%2Fsynopsis&c5=c6=&15=&cj=1"/>
+<img src="http://b.scorecardresearch.com/p?c1=2&c2=6034961&c3=&c4=http%3A%2F%2Fwww.imdb.com%2Ftitle%2Ftt0095016%2Fsynopsis&c5=c6=&15=&cj=1"/>
 </noscript>
 <!-- end comscore beacon -->
 
@@ -1040,7 +1040,7 @@ c15:""
 <script src="http://i.media-imdb.com/images/SF478cec6a48c8de4413dbc404879752d1/js/jquery/plugins/jquery.colorbox-min.js" ></script><link rel="stylesheet" type="text/css" href="http://i.media-imdb.com/images/SF73051487323537a6449a6bb75bc86d43/css/min/lightbox.css" ><script type="text/imdblogin-js" id="login">
     jQuery(document).ready(function(){
         window.imdb.login_lightbox("https://secure.imdb.com",
-                       "http://akas.imdb.com/title/tt0095016/synopsis");
+                       "http://www.imdb.com/title/tt0095016/synopsis");
     });
 </script>
 <script src="http://i.media-imdb.com/images/SFa158298d71e09af8642759d3e6ea6805/js/cc/loginbox.js" ></script><script src="http://i.media-imdb.com/images/SF5f938bdbdb70146c608bda5689780999/js/cc/suggestionsearch.js" charset="UTF-8"></script><script src="http://i.media-imdb.com/images/SFb762c590afd141254ab36f8212ac0f29/js/jquery/ui-current-custom.js" ></script><script src="http://i.media-imdb.com/images/SF9e6cf22ed900f2e6a7be58a90ed0397d/js/cc/wlb-lite.js" ></script>

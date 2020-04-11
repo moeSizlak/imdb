@@ -13,7 +13,7 @@ module Imdb
     #
     def initialize(imdb_id, title = nil)
       @id = imdb_id
-      @url = "http://akas.imdb.com/title/tt#{imdb_id}/combined"
+      @url = "http://www.imdb.com/title/tt#{imdb_id}/combined"
       @title = title.gsub(/"/, '').strip if title
     end
 
@@ -206,7 +206,7 @@ module Imdb
     
     # Use HTTParty to fetch the raw HTML for this movie.
     def self.find_by_id(imdb_id, page = :combined)
-      open("http://akas.imdb.com/title/tt#{imdb_id}/#{page}")
+      open("http://www.imdb.com/title/tt#{imdb_id}/#{page}")
     end
 
     # Convenience method for search

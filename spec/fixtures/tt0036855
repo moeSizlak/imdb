@@ -1391,7 +1391,7 @@ ad_utils.gpt.render_ad('bottom_ad');
                     "a2=",
                     "pId=",
                     "r=1",
-                    "rP=http%3A%2F%2Fakas.imdb.com%2Ftitle%2Ftt0036855%2Fcombined",
+                    "rP=http%3A%2F%2Fwww.imdb.com%2Ftitle%2Ftt0036855%2Fcombined",
                     "encoding=server",
                     "cb=508074851854"  
                 ];
@@ -1418,7 +1418,7 @@ COMSCORE.beacon({
 c1: 2,
 c2:"6034961",
 c3:"",
-c4:"http://akas.imdb.com/title/tt0036855/combined",
+c4:"http://www.imdb.com/title/tt0036855/combined",
 c5:"",
 c6:"",
 c15:""
@@ -1426,7 +1426,7 @@ c15:""
 }
 </script>
 <noscript>
-<img src="http://b.scorecardresearch.com/p?c1=2&c2=6034961&c3=&c4=http%3A%2F%2Fakas.imdb.com%2Ftitle%2Ftt0036855%2Fcombined&c5=c6=&15=&cj=1"/>
+<img src="http://b.scorecardresearch.com/p?c1=2&c2=6034961&c3=&c4=http%3A%2F%2Fwww.imdb.com%2Ftitle%2Ftt0036855%2Fcombined&c5=c6=&15=&cj=1"/>
 </noscript>
 <!-- end comscore beacon -->
 
@@ -1449,7 +1449,7 @@ c15:""
 <script src="http://i.media-imdb.com/images/SF478cec6a48c8de4413dbc404879752d1/js/jquery/plugins/jquery.colorbox-min.js" ></script><link rel="stylesheet" type="text/css" href="http://i.media-imdb.com/images/SF73051487323537a6449a6bb75bc86d43/css/min/lightbox.css" ><script type="text/imdblogin-js" id="login">
     jQuery(document).ready(function(){
         window.imdb.login_lightbox("https://secure.imdb.com",
-                       "http://akas.imdb.com/title/tt0036855/combined");
+                       "http://www.imdb.com/title/tt0036855/combined");
     });
 </script>
 <script src="http://i.media-imdb.com/images/SFa158298d71e09af8642759d3e6ea6805/js/cc/loginbox.js" ></script><script src="http://i.media-imdb.com/images/SF5f938bdbdb70146c608bda5689780999/js/cc/suggestionsearch.js" charset="UTF-8"></script><script src="http://i.media-imdb.com/images/SFb762c590afd141254ab36f8212ac0f29/js/jquery/ui-current-custom.js" ></script><script src="http://i.media-imdb.com/images/SF9e6cf22ed900f2e6a7be58a90ed0397d/js/cc/wlb-lite.js" ></script>

@@ -10,7 +10,7 @@ describe 'Imdb::Episode' do
   end
 
   it 'has a url' do
-    expect(episode.url).to eq('http://akas.imdb.com/title/tt1628064/combined')
+    expect(episode.url).to eq('http://www.imdb.com/title/tt1628064/combined')
   end
 
   it 'has an episode title' do

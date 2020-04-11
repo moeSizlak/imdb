@@ -1,0 +1,4 @@
+gem build imdb.gemspec
+gem uninstall imdb
+gem install --local imdb-0.8.2.gem
+

@@ -4,7 +4,7 @@ require 'spec_helper'
 
 # This test uses "Die hard (1988)" as a testing sample:
 #
-#     http://akas.imdb.com/title/tt0095016/combined
+#     http://www.imdb.com/title/tt0095016/combined
 #
 
 describe 'Imdb::Movie' do

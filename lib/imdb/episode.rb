@@ -4,7 +4,7 @@ module Imdb
 
     def initialize(imdb_id, season, episode, episode_title)
       super(imdb_id, episode_title)
-      @url = "http://akas.imdb.com/title/tt#{imdb_id}/combined"
+      @url = "http://www.imdb.com/title/tt#{imdb_id}/combined"
       @season = season
       @episode = episode
     end
