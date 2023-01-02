@@ -27,7 +27,8 @@ module Imdb
     end
 
     def self.query(query)
-      open("http://www.imdb.com/find?q=#{CGI.escape(query)};s=tt")
+      #URI.open("http://www.imdb.com/find?q=#{CGI.escape(query)};s=tt", "User-Agent" => "Chrome Probably")
+      URI.open("http://www.imdb.com/find/?q=#{CGI.escape(query)}", "User-Agent" => "Chrome Probably; Also, I banged your mom.")
     end
 
     def parse_movie

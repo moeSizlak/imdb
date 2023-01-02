@@ -3,7 +3,7 @@ module Imdb
     private
 
     def document
-      @document ||= Nokogiri::HTML(open('http://www.imdb.com/boxoffice/'))
+      @document ||= Nokogiri::HTML(URI.open('http://www.imdb.com/boxoffice/', "User-Agent" => "Chrome Probably"))
     end
   end # BoxOffice
 end # Imdb

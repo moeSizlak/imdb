@@ -147,12 +147,12 @@ module Imdb
 
     # Returns a string containing the title
     def title(force_refresh = false)
-      if @title && !force_refresh
-        @title
-      else
+      ##if @title && !force_refresh
+      ##  @title
+      ##else
         #@title = document.at('.combined h1').inner_html.split('<span').first.strip.imdb_unescape_html rescue nil
         @title = document.at("//h3[@itemprop = 'name']").inner_html.split('<span').first.strip.imdb_unescape_html rescue nil
-      end
+      ##end
     end
 
     # Returns an integer containing the year (CCYY) the movie was released in.
@@ -206,7 +206,7 @@ module Imdb
     
     # Use HTTParty to fetch the raw HTML for this movie.
     def self.find_by_id(imdb_id, page = :combined)
-      open("http://www.imdb.com/title/tt#{imdb_id}/#{page}")
+      URI.open("http://www.imdb.com/title/tt#{imdb_id}/#{page}", "User-Agent" => "Chrome Probably")
     end
 
     # Convenience method for search
