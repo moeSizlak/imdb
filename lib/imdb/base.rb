@@ -64,7 +64,8 @@ module Imdb
     # Returns an array of genres (as strings)
     def genres
       #document.search("h5[text()='Genre:'] ~ div a[@href*='/Sections/Genres/']").map { |link| link.content.strip } rescue []
-      document.search("div.titlereference-header a[@href^='/genre/']").map { |link| link.content.strip } rescue []
+      #document.search("div.titlereference-header a[@href^='/genre/']").map { |link| link.content.strip } rescue []
+      jsonld['genre'] || []
     end
 
     # Returns an array of languages as strings.
@@ -90,7 +91,8 @@ module Imdb
     # Returns a string containing the plot.
     def plot
       #sanitize_plot(document.at("h5[text()='Plot:'] ~ div").content) rescue nil
-      sanitize_plot(document.at('section.titlereference-section-overview > div').content.strip) rescue nil
+      #sanitize_plot(document.at('section.titlereference-section-overview > div').content.strip) rescue nil
+      jsonld["description"]
     end
 
     # Returns a string containing the plot summary
@@ -117,9 +119,11 @@ module Imdb
 
     # Returns a float containing the average user rating
     def rating
-      doc = Nokogiri::HTML(Imdb::Movie.find_by_id(@id, :ratings))
+      #doc = Nokogiri::HTML(Imdb::Movie.find_by_id(@id, :ratings))
+      #puts "DEBUG rating=\n#{ doc.css('div#main div.title-ratings-sub-page div.allText')[0].to_s}\n\n"
       #doc.css('div#tn15.ratings div#tn15main div#tn15content p')[0].text.match(/IMDb users have given a weighted average vote of (\d[\d.]+) \/ 10/).captures[0] rescue nil
-      doc.css('div#main div.title-ratings-sub-page div.allText')[0].text.gsub(/\s+/," ").match(/IMDb users have given a weighted average vote of (\d[\d.]+) \/ 10/).captures[0] rescue nil
+      #doc.css('div#main div.title-ratings-sub-page div.allText')[0].text.gsub(/\s+/," ").match(/IMDb users have given a weighted average vote of (\d[\d.]+) \/ 10/).captures[0] rescue nil
+      jsonld.dig('aggregateRating','ratingValue')
     end
     
     # Returns an int containing the Metascore
@@ -129,9 +133,11 @@ module Imdb
 
     # Returns an int containing the number of user ratings
     def votes
-      doc = Nokogiri::HTML(Imdb::Movie.find_by_id(@id, :ratings))
+      #doc = Nokogiri::HTML(Imdb::Movie.find_by_id(@id, :ratings))
+      #puts "DEBUG votes=\n#{ doc.css('div#main div.title-ratings-sub-page div.allText')[0].to_s}\n\n"
       #doc.css('div#tn15.ratings div#tn15main div#tn15content p')[0].text.match(/(\d+) IMDb users have given/).captures[0] rescue nil
-      doc.css('div#main div.title-ratings-sub-page div.allText')[0].text.gsub(/\s+/," ").match(/([,\d]+) IMDb users have given/).captures[0].gsub(/,/,'') rescue nil
+      #doc.css('div#main div.title-ratings-sub-page div.allText')[0].text.gsub(/\s+/," ").match(/([,\d]+) IMDb users have given/).captures[0].gsub(/,/,'') rescue nil
+      jsonld.dig('aggregateRating','ratingCount')
     end
 
     # Returns a string containing the tagline
@@ -142,7 +148,8 @@ module Imdb
     # Returns a string containing the mpaa rating and reason for rating
     def mpaa_rating
       #document.at("//a[starts-with(.,'MPAA')]/../following-sibling::*").content.strip rescue nil
-      document.at("a[@href^='/search/title?certificates=US%3A']").text.strip.gsub(/^United States:/, '') rescue nil
+      #document.at("a[@href^='/search/title?certificates=US%3A']").text.strip.gsub(/^United States:/, '') rescue nil
+      jsonld['contentRating']
     end
 
     # Returns a string containing the title
@@ -151,8 +158,9 @@ module Imdb
       ##  @title
       ##else
         #@title = document.at('.combined h1').inner_html.split('<span').first.strip.imdb_unescape_html rescue nil
-        @title = document.at("//h3[@itemprop = 'name']").inner_html.split('<span').first.strip.imdb_unescape_html rescue nil
+        #@title = document.at("//h3[@itemprop = 'name']").inner_html.split('<span').first.strip.imdb_unescape_html rescue nil
       ##end
+      jsonld['alternateName'] || jsonld['name']
     end
 
     # Returns an integer containing the year (CCYY) the movie was released in.
@@ -186,6 +194,10 @@ module Imdb
     # Returns a new Nokogiri document for parsing.
     def document
       @document ||= Nokogiri::HTML(Imdb::Movie.find_by_id(@id))
+    end
+
+    def jsonld
+      @jsonld ||= JSON.parse(Nokogiri::HTML(Imdb::Movie.find_by_id(@id, "")).css('script[@type="application/ld+json"]').text)
     end
 
     def locations_document
