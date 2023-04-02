@@ -4,6 +4,8 @@ $LOAD_PATH.unshift(File.dirname(__FILE__)) unless
 require 'open-uri'
 require 'rubygems'
 require 'nokogiri'
+require 'json'
+require 'htmlentities'
 
 require 'imdb/base'
 require 'imdb/movie'

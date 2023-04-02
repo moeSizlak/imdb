@@ -88,7 +88,9 @@ module Imdb
 
     # Returns a string containing the plot.
     def plot
-      jsonld["description"]
+      coder = HTMLEntities.new
+
+      coder.decode jsonld["description"]
     end
 
     # Returns a string containing the plot summary
