@@ -88,9 +88,7 @@ module Imdb
 
     # Returns a string containing the plot.
     def plot
-      coder = HTMLEntities.new
-
-      coder.decode jsonld["description"]
+      HTMLEntities.new.decode jsonld["description"]
     end
 
     # Returns a string containing the plot summary
@@ -142,13 +140,14 @@ module Imdb
 
     # Returns a string containing the title
     def title(force_refresh = false)
-      jsonld['alternateName'] || jsonld['name']
+      HTMLEntities.new.decode (jsonld['alternateName'] || jsonld['name'])
     end
 
     # Returns an integer containing the year (CCYY) the movie was released in.
     def year
       #document.at("a[@href^='/year/']").content.to_i rescue nil
-       document.at("//h3[@itemprop = 'name']//a[@itemprop = 'url']").text.to_i rescue nil
+      #document.at("//h3[@itemprop = 'name']//a[@itemprop = 'url']").text.to_i rescue nil
+      document.at("//h1[@data-testid = 'hero__pageTitle']//span[@data-testid = 'hero__primary-text-suffix']").text.gsub(/\D/,'').to_i rescue nil
     end
 
     # Returns release date for the movie.
@@ -200,7 +199,8 @@ module Imdb
     
     # Use HTTParty to fetch the raw HTML for this movie.
     def self.find_by_id(imdb_id, page = :combined)
-      URI.open("http://www.imdb.com/title/tt#{imdb_id}/#{page}", "User-Agent" => "Chrome Probably")
+      #URI.open("http://www.imdb.com/title/tt#{imdb_id}/#{page}", "User-Agent" => "Chrome Probably")
+      HTTPX.plugin(:follow_redirects).with(headers:{ "User-Agent" => "Chrome Probably" }).get("http://www.imdb.com/title/tt#{imdb_id}/#{page}")
     end
 
     # Convenience method for search
