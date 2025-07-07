@@ -17,18 +17,19 @@ module Imdb
       @title = title.gsub(/"/, '').strip if title
     end
 
+
     # Returns an array with cast members
     def cast_members
-      document.search('table.cast td.nm a').map { |link| link.content.strip } rescue []
+      document.css("div[data-testid='sub-section-cast'] li[data-testid='name-credits-list-item'] a.name-credits--title-text-big").map { |link| link.content.strip } rescue []
     end
 
     def cast_member_ids
-      document.search('table.cast td.nm a').map { |l| l['href'].sub(%r{^/name/(.*)/}, '\1') }
+      document.css("div[data-testid='sub-section-cast'] li[data-testid='name-credits-list-item'] a.name-credits--title-text-big").map { |link| link['href'].gsub(/^.*\/name\/([^?\/]*).*/, '\1') } rescue []
     end
 
     # Returns an array with cast characters
     def cast_characters
-      document.search('table.cast td.char').map { |link| link.content.strip } rescue []
+      document.css("div[data-testid='sub-section-cast'] li[data-testid='name-credits-list-item'] a[href*=character]").map { |link| link.content.strip } rescue []
     end
 
     # Returns an array with cast members and characters
@@ -42,23 +43,17 @@ module Imdb
 
     # Returns the name of the director
     def director
-      document.search("h5[text()^='Director'] ~ div a").map { |link| link.content.strip } rescue []
+      jsonld.dig('director',0,'name')
     end
 
     # Returns the names of Writers
     def writers
-      writers_list = []
-
-      fullcredits_document.search("h4[text()^='Writing Credits'] + table tbody tr td[class='name']").each_with_index do |name, i|
-        writers_list[i] = name.content.strip unless writers_list.include? name.content.strip
-      end rescue []
-
-      writers_list
+      document.css("div[data-testid='sub-section-writer'] li[data-testid='name-credits-list-item'] a.name-credits--title-text-big").map { |link| link.content.strip } rescue []
     end
 
     # Returns the url to the "Watch a trailer" page
     def trailer_url
-      'http://imdb.com' + document.at("a[@href*='/video/screenplay/']")['href'] rescue nil
+      jsonld.dig('trailer','url')
     end
 
     # Returns an array of genres (as strings)
@@ -68,49 +63,45 @@ module Imdb
 
     # Returns an array of languages as strings.
     def languages
-      document.search("h5[text()='Language:'] ~ div a[@href*='/language/']").map { |link| link.content.strip } rescue []
+      document.css("li[data-testid='title-details-languages'] li a").map { |link| link.content.strip } rescue []
     end
 
     # Returns an array of countries as strings.
     def countries
-      document.search("h5[text()='Country:'] ~ div a[@href*='/country/']").map { |link| link.content.strip } rescue []
+      document.css("li[data-testid='title-details-origin'] li a").map { |link| link.content.strip } rescue []
     end
 
     # Returns the duration of the movie in minutes as an integer.
     def length
-      document.at("h5[text()='Runtime:'] ~ div").content[/\d+ min/].to_i rescue nil
+      (Duration.new(jsonld["duration"]).total_minutes) rescue nil
     end
 
     # Returns the company
-    def company
-      document.search("h5[text()='Company:'] ~ div a[@href*='/company/']").map { |link| link.content.strip }.first rescue nil
+    def companies
+      document.css("li[data-testid='title-details-companies'] li a").map { |link| link.content.strip } rescue []
     end
+
+    def company
+      companies.first rescue nil
+    end    
 
     # Returns a string containing the plot.
     def plot
-      HTMLEntities.new.decode jsonld["description"]
+      HTMLEntities.new.decode jsonld["description"] rescue nil
     end
 
     # Returns a string containing the plot summary
     def plot_synopsis
-      doc = Nokogiri::HTML(Imdb::Movie.find_by_id(@id, :synopsis))
-      doc.at("div[@id='swiki.2.1']").content.strip rescue nil
+      synopsis_document.at_css("div[@data-testid='sub-section-synopsis']/ul/li").content rescue nil
     end
 
     def plot_summary
-      doc = Nokogiri::HTML(Imdb::Movie.find_by_id(@id, :plotsummary))
-      doc.at('p.plotSummary').inner_html.gsub(/<i.*/im, '').strip.imdb_unescape_html rescue nil
+      HTMLEntities.new.decode jsonld['description'] rescue nil
     end
 
     # Returns a string containing the URL to the movie poster.
     def poster
-      src = document.at("a[@name='poster'] img")['src'] rescue nil
-      case src
-      when /^(http:.+@@)/
-        Regexp.last_match[1] + '.jpg'
-      when /^(http:.+?)\.[^\/]+$/
-        Regexp.last_match[1] + '.jpg'
-      end
+      jsonld['image'] rescue nil
     end
 
     # Returns a float containing the average user rating
@@ -120,7 +111,7 @@ module Imdb
     
     # Returns an int containing the Metascore
     def metascore
-      criticreviews_document.at('//span[@itemprop="ratingValue"]').content.to_i rescue nil
+      criticreviews_document.at_css("div[@data-testid='critic-reviews-title'] div").content.strip.imdb_unescape_html rescue nil
     end
 
     # Returns an int containing the number of user ratings
@@ -130,7 +121,7 @@ module Imdb
 
     # Returns a string containing the tagline
     def tagline
-      document.search("h5[text()='Tagline:'] ~ div").first.inner_html.gsub(/<.+>.+<\/.+>/, '').strip.imdb_unescape_html rescue nil
+      document.at_css("li[@data-testid = 'storyline-taglines'] span").content.strip.imdb_unescape_html rescue nil
     end
 
     # Returns a string containing the mpaa rating and reason for rating
@@ -145,19 +136,17 @@ module Imdb
 
     # Returns an integer containing the year (CCYY) the movie was released in.
     def year
-      #document.at("a[@href^='/year/']").content.to_i rescue nil
-      #document.at("//h3[@itemprop = 'name']//a[@itemprop = 'url']").text.to_i rescue nil
       document.at("//h1[@data-testid = 'hero__pageTitle']//span[@data-testid = 'hero__primary-text-suffix']").text.gsub(/\D/,'').to_i rescue nil
     end
 
     # Returns release date for the movie.
     def release_date
-      sanitize_release_date(document.at("h5[text()*='Release Date'] ~ div").content) rescue nil
+      sanitize_release_date(document.at_css("a[@href$='ttrv_ov_rdat']").content) rescue nil
     end
 
     # Returns filming locations from imdb_url/locations
     def filming_locations
-      locations_document.search('#filming_locations_content .soda dt a').map { |link| link.content.strip } rescue []
+      locations_document.css("div[data-testid='item-id'] a[data-testid='item-text-with-link']").map { |link| link.content.strip } rescue []
     end
 
     # Returns alternative titles from imdb_url/releaseinfo
@@ -196,10 +185,13 @@ module Imdb
     def criticreviews_document
       @criticreviews_document ||= Nokogiri::HTML(Imdb::Movie.find_by_id(@id, 'criticreviews'))
     end
+
+    def synopsis_document
+      @synopsis_document ||= Nokogiri::HTML(Imdb::Movie.find_by_id(@id, 'synopsis'))
+    end
     
     # Use HTTParty to fetch the raw HTML for this movie.
     def self.find_by_id(imdb_id, page = :combined)
-      #URI.open("http://www.imdb.com/title/tt#{imdb_id}/#{page}", "User-Agent" => "Chrome Probably")
       HTTPX.plugin(:follow_redirects).with(headers:{ "User-Agent" => "Chrome Probably" }).get("http://www.imdb.com/title/tt#{imdb_id}/#{page}")
     end
 

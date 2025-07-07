@@ -27,8 +27,6 @@ module Imdb
     end
 
     def self.query(query)
-      #URI.open("http://www.imdb.com/find?q=#{CGI.escape(query)};s=tt", "User-Agent" => "Chrome Probably")
-      #URI.open("http://www.imdb.com/find/?q=#{CGI.escape(query)}", "User-Agent" => "Chrome Probably; Also, I banged your mom.")
       HTTPX.plugin(:follow_redirects).with(headers:{ "User-Agent" => "Chrome Probably; Also, I banged your mom." }).get("http://www.imdb.com/find/?q=#{CGI.escape(query)}")
     end
 
