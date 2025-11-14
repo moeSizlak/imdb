@@ -1,7 +1,13 @@
 module Imdb
   # Represents something on IMDB.com
+
+  $browser = Ferrum::Browser.new({:process_timeout => 30})
+  $browser_mutex = Mutex.new
+
   class Base
     attr_accessor :id, :url, :title, :also_known_as
+
+    
 
     # Initialize a new IMDB movie object with it's IMDB id (as a String)
     #
@@ -192,7 +198,21 @@ module Imdb
     
     # Use HTTParty to fetch the raw HTML for this movie.
     def self.find_by_id(imdb_id, page = :combined)
-      HTTPX.plugin(:follow_redirects).with(headers:{ "User-Agent" => "Chrome Probably" }).get("http://www.imdb.com/title/tt#{imdb_id}/#{page}")
+      #HTTPX.plugin(:follow_redirects).with(headers:{ "User-Agent" => "Chrome Probably" }).get("http://www.imdb.com/title/tt#{imdb_id}/#{page}")
+      html = nil
+      $browser_mutex.synchronize do
+        page = $browser.create_page
+        page.headers.set("User-Agent" => "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36")
+        page.go_to("https://www.imdb.com/title/tt#{imdb_id}/#{page}")
+        sleep 2
+        html = page.body
+        if html[-1000..-1] =~ /Enable JavaScript and then reload the page./
+          sleep 4
+          html = page.body
+        end
+        $browser.reset
+      end
+      html
     end
 
     # Convenience method for search

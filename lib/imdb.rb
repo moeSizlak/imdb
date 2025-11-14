@@ -7,6 +7,7 @@ require 'nokogiri'
 require 'json'
 require 'htmlentities'
 require 'ruby-duration'
+require 'ferrum'
 
 require 'imdb/base'
 require 'imdb/movie'

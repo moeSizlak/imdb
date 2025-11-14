@@ -27,7 +27,21 @@ module Imdb
     end
 
     def self.query(query)
-      HTTPX.plugin(:follow_redirects).with(headers:{ "User-Agent" => "Chrome Probably; Also, I banged your mom." }).get("http://www.imdb.com/find/?q=#{CGI.escape(query)}")
+      #HTTPX.plugin(:follow_redirects).with(headers:{ "User-Agent" => "Chrome Probably; Also, I banged your mom." }).get("http://www.imdb.com/find/?q=#{CGI.escape(query)}")
+      html = nil
+      $browser_mutex.synchronize do
+        page = $browser.create_page
+        page.headers.set("User-Agent" => "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36")
+        page.go_to("http://www.imdb.com/find/?q=#{CGI.escape(query)}")
+        sleep 2
+        html = page.body
+        if html[-1000..-1] =~ /Enable JavaScript and then reload the page./
+          sleep 4
+          html = page.body
+        end
+        $browser.reset
+      end
+      html
     end
 
     def parse_movie
